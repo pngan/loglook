@@ -6,9 +6,10 @@ namespace Model
     {
         void Start();
         void SetName(string name);
-        event EventHandler<GreetingArgs> OnGreetingChanged;
+        event EventHandler<FileEntity> OnFileAdded;
 
         string LogContent { get; }
 
+        void LoadFile(string defaultPath);
     }
 }

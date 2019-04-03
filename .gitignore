@@ -193,3 +193,4 @@ obj
 *.ide
 *.lock
 packages/
+sqlite3/

@@ -23,7 +23,7 @@ namespace ViewModel
             FileRawViewModel = fileRawViewModel;
             FilterListViewModel = filterListViewModel;
             GraphViewModel = graphViewModel;
-            m_model.OnGreetingChanged += OnGreetingChanged;
+            //m_model.OnGreetingChanged += OnGreetingChanged;
         }
 
         private void OnGreetingChanged(object sender, GreetingArgs e)
