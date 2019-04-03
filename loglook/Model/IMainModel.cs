@@ -8,5 +8,7 @@ namespace Model
         void SetName(string name);
         event EventHandler<GreetingArgs> OnGreetingChanged;
 
+        string LogContent { get; }
+
     }
 }

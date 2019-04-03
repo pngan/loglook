@@ -5,13 +5,24 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModel="clr-namespace:ViewModel;assembly=ViewModel"
         Title="MainWindow"
-        Width="525"
-        Height="350"
+        Width="1000"
+        Height="1000"
         FocusManager.FocusedElement="{Binding ElementName=NameBox}"
         Loaded="MainWindow_OnLoaded"
         d:DataContext="{d:DesignInstance Type=viewModel:MainViewModel,
                                          IsDesignTimeCreatable=True}"
         mc:Ignorable="d">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="FileFilteredView.xaml" />
+                <ResourceDictionary Source="FileRawView.xaml" />
+                <ResourceDictionary Source="FilterListView.xaml" />
+                <ResourceDictionary Source="GraphView.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid Margin="20">
         <Grid.Resources>
             <Style TargetType="TextBox">
@@ -23,13 +34,40 @@
         </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="32" />
+            <RowDefinition Height="5" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="5" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="5" />
             <RowDefinition Height="*" />
+
         </Grid.RowDefinitions>
-        <TextBox x:Name="NameBox"
-                 Grid.Row="0"
-                 Text="{Binding Name,
-                                UpdateSourceTrigger=PropertyChanged}" />
-        <TextBlock Grid.Row="2" Text="{Binding Greeting}" />
+        <ContentPresenter 
+            Grid.Row="0"
+            Margin="20"
+            Content="{Binding GraphViewModel}"
+            HorizontalAlignment="Stretch" 
+            VerticalAlignment="Stretch"/>
+        <GridSplitter Grid.Row="1" Height="5" HorizontalAlignment="Stretch" />
+        <ContentPresenter 
+            Grid.Row="2"
+            Margin="20"
+            Content="{Binding FileFilteredViewModel}"
+            HorizontalAlignment="Stretch" 
+            VerticalAlignment="Stretch"/>
+        <GridSplitter Grid.Row="3" Height="5" HorizontalAlignment="Stretch" />
+        <ContentPresenter 
+            Grid.Row="4"
+            Margin="20"
+            Content="{Binding FilterListViewModel}"
+            HorizontalAlignment="Stretch" 
+            VerticalAlignment="Stretch"/>
+        <GridSplitter Grid.Row="5" Height="5" HorizontalAlignment="Stretch" />
+        <ContentPresenter 
+            Grid.Row="6" 
+            Margin="20"
+            Content="{Binding FileRawViewModel}"
+            HorizontalAlignment="Stretch" 
+            VerticalAlignment="Stretch"/>
     </Grid>
 </Window>

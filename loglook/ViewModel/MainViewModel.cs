@@ -9,11 +9,20 @@ namespace ViewModel
 
     public class MainViewModel : ViewModelBase, IMainViewModel
     {
+        public IFileFilteredViewModel FileFilteredViewModel  { get;}
+        public IFileRawViewModel FileRawViewModel { get;}
+        public IFilterListViewModel FilterListViewModel { get;}
+        public IGraphViewModel GraphViewModel { get;}
+
         private readonly IMainModel m_model;
 
-        public MainViewModel(IMainModel model)
+        public MainViewModel(IMainModel model, IFileFilteredViewModel fileFilteredViewModel, IFileRawViewModel fileRawViewModel, IFilterListViewModel filterListViewModel, IGraphViewModel graphViewModel)
         {
             m_model = model;
+            FileFilteredViewModel = fileFilteredViewModel;
+            FileRawViewModel = fileRawViewModel;
+            FilterListViewModel = filterListViewModel;
+            GraphViewModel = graphViewModel;
             m_model.OnGreetingChanged += OnGreetingChanged;
         }
 

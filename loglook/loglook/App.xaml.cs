@@ -23,6 +23,12 @@ namespace loglook
         {
             builder.RegisterType<MainModel>().As<IMainModel>();
             builder.RegisterType<MainViewModel>().As<IMainViewModel>();
+            builder.RegisterType<FileFilteredViewModel>().As<IFileFilteredViewModel>();
+            builder.RegisterType<FileRawViewModel>().As<IFileRawViewModel>();
+            builder.RegisterType<GraphViewModel>().As<IGraphViewModel>();
+            builder.RegisterType<FilterListViewModel>().As<IFilterListViewModel>();
+            builder.RegisterType<FilterItemViewModel>().As<IFilterItemViewModel>();
+
             builder.RegisterType<View.MainWindow>();
         }
 
