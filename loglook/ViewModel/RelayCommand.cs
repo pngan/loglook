@@ -14,14 +14,14 @@ namespace ViewModel
             add { CommandManager.RequerySuggested += value; }
             remove { CommandManager.RequerySuggested -= value; }
         }
-        private readonly Action m_methodToExecute;
+        private readonly Action<object> m_methodToExecute;
         private readonly Func<bool> m_canExecuteEvaluator;
-        public RelayCommand(Action methodToExecute, Func<bool> canExecuteEvaluator)
+        public RelayCommand(Action<object> methodToExecute, Func<bool> canExecuteEvaluator)
         {
             this.m_methodToExecute = methodToExecute;
             this.m_canExecuteEvaluator = canExecuteEvaluator;
         }
-        public RelayCommand(Action methodToExecute)
+        public RelayCommand(Action<object> methodToExecute)
             : this(methodToExecute, null)
         {
         }
@@ -39,7 +39,7 @@ namespace ViewModel
         }
         public void Execute(object parameter)
         {
-            this.m_methodToExecute.Invoke();
+            this.m_methodToExecute.Invoke(parameter);
         }
     }
 }

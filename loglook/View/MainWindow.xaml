@@ -9,67 +9,28 @@
         Height="1000"
         FocusManager.FocusedElement="{Binding ElementName=NameBox}"
         Loaded="MainWindow_OnLoaded"
-        d:DataContext="{d:DesignInstance Type=viewModel:MainViewModel,
-                                         IsDesignTimeCreatable=True}"
+        d:DataContext="{d:DesignInstance Type=viewModel:MainViewModel, IsDesignTimeCreatable=True}"
         mc:Ignorable="d">
 
-    <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="FileFilteredView.xaml" />
-                <ResourceDictionary Source="FileRawView.xaml" />
-                <ResourceDictionary Source="FilterListView.xaml" />
-                <ResourceDictionary Source="GraphView.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Window.Resources>
-    <Grid Margin="20">
-        <Grid.Resources>
-            <Style TargetType="TextBox">
-                <Setter Property="TextBlock.FontSize" Value="36" />
-            </Style>
-            <Style TargetType="TextBlock">
-                <Setter Property="FontSize" Value="36" />
-            </Style>
-        </Grid.Resources>
+    <Grid Margin="20" ShowGridLines="True">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="5" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="5" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="5" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-
         </Grid.RowDefinitions>
-        <ContentPresenter 
+        <Button 
             Grid.Row="0"
+            Command="{Binding OpenFileCommand}"
+            CommandParameter="{Binding RelativeSource=
+                                         { RelativeSource FindAncestor, 
+                                           AncestorType={x:Type Window},
+                                           AncestorLevel=1}}"
+            HorizontalAlignment="Left" Width="80">Open File...</Button>
+
+        <ContentPresenter 
+            Grid.Row="1"
             Margin="20"
             Content="{Binding GraphViewModel}"
             HorizontalAlignment="Stretch" 
             VerticalAlignment="Stretch"/>
-        <GridSplitter Grid.Row="1" Height="5" HorizontalAlignment="Stretch" />
-        <ContentPresenter 
-            Grid.Row="2"
-            Margin="20"
-            Content="{Binding FileFilteredViewModel}"
-            HorizontalAlignment="Stretch" 
-            VerticalAlignment="Stretch"/>
-        <GridSplitter Grid.Row="3" Height="5" HorizontalAlignment="Stretch" />
-        <ContentPresenter 
-            Grid.Row="4"
-            Margin="20"
-            Content="{Binding FilterListViewModel}"
-            HorizontalAlignment="Stretch" 
-            VerticalAlignment="Stretch"/>
-        <GridSplitter Grid.Row="5" Height="5" HorizontalAlignment="Stretch" />
-        <ContentPresenter 
-            Grid.Row="6" 
-            Margin="20"
-            Content="{Binding FileRawViewModel}"
-            HorizontalAlignment="Stretch" 
-            VerticalAlignment="Stretch"/>
-        <Button Command="{Binding OpenFileCommand}">Open File...</Button>
     </Grid>
 </Window>

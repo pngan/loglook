@@ -2,6 +2,7 @@
 using Autofac;
 using Model;
 using Model.Services;
+using View;
 using ViewModel;
 
 namespace loglook
@@ -32,6 +33,9 @@ namespace loglook
             builder.RegisterType<FilterListViewModel>().As<IFilterListViewModel>();
             builder.RegisterType<FilterItemViewModel>().As<IFilterItemViewModel>();
             builder.RegisterType<FileSelectionService>().As<IFileSelectionService>();
+            builder.RegisterType<FileWindowService>().SingleInstance().AutoActivate();
+            builder.RegisterType<InteractionMediator>().As<IInteractionMediator>().SingleInstance();
+            builder.RegisterType<FileWindowViewModel>().As<IFileWindowViewModel>().InstancePerLifetimeScope();
 
             builder.RegisterType<View.MainWindow>();
         }

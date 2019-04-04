@@ -9,38 +9,29 @@ namespace ViewModel
 
     public class MainViewModel : ViewModelBase, IMainViewModel
     {
-        public IFileFilteredViewModel FileFilteredViewModel  { get;}
-        public IFileRawViewModel FileRawViewModel { get;}
-        public IFilterListViewModel FilterListViewModel { get;}
-        public IGraphViewModel GraphViewModel { get;}
+
+        public IGraphViewModel GraphViewModel { get; }
 
         public RelayCommand OpenFileCommand { get; private set; }
 
         private readonly IMainModel m_model;
+        private readonly IInteractionMediator m_interactionMediator;
 
-        public MainViewModel(IMainModel model, IFileFilteredViewModel fileFilteredViewModel, IFileRawViewModel fileRawViewModel, IFilterListViewModel filterListViewModel, IGraphViewModel graphViewModel)
+        public MainViewModel(IMainModel model, IGraphViewModel graphViewModel, IInteractionMediator interactionMediator)
         {
-            m_model = model;
-            FileFilteredViewModel = fileFilteredViewModel;
-            FileRawViewModel = fileRawViewModel;
-            FilterListViewModel = filterListViewModel;
             GraphViewModel = graphViewModel;
-            //m_model.OnGreetingChanged += OnGreetingChanged;
+            m_model = model;
+            m_interactionMediator = interactionMediator;
             OpenFileCommand = new RelayCommand(OpenFileCommandImpl);
         }
 
-        private void OpenFileCommandImpl()
+        private void OpenFileCommandImpl(object parameter)
         {
-            
+            m_interactionMediator.RequestFileWindow(this, parameter);
         }
 
-        private void OnGreetingChanged(object sender, GreetingArgs e)
-        {
-            Greeting = e.Greeting;
-        }
 
         private string m_name;
-        private string m_greeting;
 
         public string Name
         {
@@ -52,15 +43,6 @@ namespace ViewModel
             }
         }
 
-        public string Greeting
-        {
-            get { return m_greeting; }
-            set
-            {
-                m_greeting = value;
-                OnPropertyChanged("Greeting");
-            }
-        }
         
         public void Start()
         {

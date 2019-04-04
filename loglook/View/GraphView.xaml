@@ -6,6 +6,6 @@
              xmlns:local="clr-namespace:View"
              xmlns:vm="clr-namespace:ViewModel;assembly=ViewModel" >
     <DataTemplate DataType="{x:Type vm:GraphViewModel}">
-        <TextBlock Text="GraphViewModel"/>
+        <TextBlock Text="GraphViewModel!"/>
     </DataTemplate>
 </ResourceDictionary>
