@@ -40,6 +40,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="5" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
 
         </Grid.RowDefinitions>
         <ContentPresenter 
@@ -69,5 +70,6 @@
             Content="{Binding FileRawViewModel}"
             HorizontalAlignment="Stretch" 
             VerticalAlignment="Stretch"/>
+        <Button Command="{Binding OpenFileCommand}">Open File...</Button>
     </Grid>
 </Window>

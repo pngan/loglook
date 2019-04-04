@@ -14,6 +14,8 @@ namespace ViewModel
         public IFilterListViewModel FilterListViewModel { get;}
         public IGraphViewModel GraphViewModel { get;}
 
+        public RelayCommand OpenFileCommand { get; private set; }
+
         private readonly IMainModel m_model;
 
         public MainViewModel(IMainModel model, IFileFilteredViewModel fileFilteredViewModel, IFileRawViewModel fileRawViewModel, IFilterListViewModel filterListViewModel, IGraphViewModel graphViewModel)
@@ -24,6 +26,12 @@ namespace ViewModel
             FilterListViewModel = filterListViewModel;
             GraphViewModel = graphViewModel;
             //m_model.OnGreetingChanged += OnGreetingChanged;
+            OpenFileCommand = new RelayCommand(OpenFileCommandImpl);
+        }
+
+        private void OpenFileCommandImpl()
+        {
+            
         }
 
         private void OnGreetingChanged(object sender, GreetingArgs e)
