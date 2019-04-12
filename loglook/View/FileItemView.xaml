@@ -1,24 +1,18 @@
-﻿<Window x:Class="View.FileWindow"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:viewModel="clr-namespace:ViewModel;assembly=ViewModel"
-             xmlns:local="clr-namespace:View"
-             mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance Type=viewModel:FileWindowViewModel, IsDesignTimeCreatable=True}"
-             d:DesignHeight="450" d:DesignWidth="800">
+﻿<ResourceDictionary x:Class="View.FileItemView"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                    xmlns:local="clr-namespace:View"
+                    xmlns:vm="clr-namespace:ViewModel;assembly=ViewModel" >
 
-    <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../FileFilteredView.xaml" />
-                <ResourceDictionary Source="../FileRawView.xaml" />
-                <ResourceDictionary Source="../FilterListView.xaml" />
-                <ResourceDictionary Source="../GraphView.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Window.Resources>
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="FilterListView.xaml" />
+        <ResourceDictionary Source="GraphView.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <DataTemplate DataType="{x:Type vm:FileItemViewModel}">
+
     <Grid Margin="20">
         <Grid.Resources>
             <Style TargetType="TextBox">
@@ -39,8 +33,8 @@
             <RowDefinition Height="Auto" />
 
         </Grid.RowDefinitions>
-
-        <ContentPresenter 
+            <TextBlock Text="{Binding Path}"></TextBlock>
+        <!--<ContentPresenter 
             Grid.Row="2"
             Margin="20"
             Content="{Binding FileFilteredViewModel}"
@@ -59,6 +53,7 @@
             Margin="20"
             Content="{Binding FileRawViewModel}"
             HorizontalAlignment="Stretch" 
-            VerticalAlignment="Stretch"/>
-    </Grid>
-</Window>
+            VerticalAlignment="Stretch"/>-->
+        </Grid>
+    </DataTemplate>
+</ResourceDictionary>

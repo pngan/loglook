@@ -1,9 +1,10 @@
 ﻿using System.Windows;
 using Autofac;
 using Model;
-using Model.Services;
 using View;
+using View.Services;
 using ViewModel;
+using IFileSelectionService = ViewModel.IFileSelectionService;
 
 namespace loglook
 {
@@ -25,15 +26,16 @@ namespace loglook
 
         private void RegisterDependencies(ContainerBuilder builder)
         {
-            builder.RegisterType<MainModel>().As<IMainModel>().InstancePerLifetimeScope();
+            //builder.RegisterType<MainModel>().As<IMainModel>().InstancePerLifetimeScope();
             builder.RegisterType<MainViewModel>().As<IMainViewModel>().InstancePerLifetimeScope();
+            builder.RegisterType<FileItemViewModel>().As<IFileItemViewModel>().InstancePerLifetimeScope();
             builder.RegisterType<FileFilteredViewModel>().As<IFileFilteredViewModel>();
             builder.RegisterType<FileRawViewModel>().As<IFileRawViewModel>();
             builder.RegisterType<GraphViewModel>().As<IGraphViewModel>();
             builder.RegisterType<FilterListViewModel>().As<IFilterListViewModel>();
             builder.RegisterType<FilterItemViewModel>().As<IFilterItemViewModel>();
             builder.RegisterType<FileSelectionService>().As<IFileSelectionService>();
-            builder.RegisterType<FileWindowService>().SingleInstance().AutoActivate();
+            //builder.RegisterType<FileWindowService>().SingleInstance().AutoActivate();
             builder.RegisterType<InteractionMediator>().As<IInteractionMediator>().SingleInstance();
             builder.RegisterType<FileWindowViewModel>().As<IFileWindowViewModel>().InstancePerLifetimeScope();
 

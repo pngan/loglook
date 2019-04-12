@@ -12,6 +12,10 @@
         d:DataContext="{d:DesignInstance Type=viewModel:MainViewModel, IsDesignTimeCreatable=True}"
         mc:Ignorable="d">
 
+    <Window.Resources>
+        <ResourceDictionary Source="FileItemView.xaml" />
+    </Window.Resources>
+
     <Grid Margin="20" ShowGridLines="True">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -26,11 +30,15 @@
                                            AncestorLevel=1}}"
             HorizontalAlignment="Left" Width="80">Open File...</Button>
 
-        <ContentPresenter 
+        <ItemsControl 
             Grid.Row="1"
+            ItemsSource="{Binding FileList}"
+            ></ItemsControl>
+        <!--<ContentPresenter 
+            
             Margin="20"
             Content="{Binding GraphViewModel}"
             HorizontalAlignment="Stretch" 
-            VerticalAlignment="Stretch"/>
+            VerticalAlignment="Stretch"/>-->
     </Grid>
 </Window>
