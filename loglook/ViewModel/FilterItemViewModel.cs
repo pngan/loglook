@@ -2,11 +2,19 @@
 {
     public class FilterItemViewModel : ViewModelBase, IFilterItemViewModel
     {
-        public string Name => "FilterItemViewModel";
+        public IFilterItemViewModel FileItemViewModel { get; }
+        public IGraphViewModel GraphViewModel { get; }
+
+        public FilterItemViewModel(IFilterItemViewModel fileItemViewModel, IGraphViewModel graphViewModel)
+        {
+            FileItemViewModel = fileItemViewModel;
+            GraphViewModel = graphViewModel;
+        }
     }
 
     public interface IFilterItemViewModel
     {
-        string Name { get; }
+        IFilterItemViewModel FileItemViewModel { get; }
+        IGraphViewModel GraphViewModel { get; }
     }
 }

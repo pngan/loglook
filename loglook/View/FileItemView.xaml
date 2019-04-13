@@ -14,27 +14,45 @@
     <DataTemplate DataType="{x:Type vm:FileItemViewModel}">
 
     <Grid Margin="20">
-        <Grid.Resources>
+        <!--<Grid.Resources>
             <Style TargetType="TextBox">
                 <Setter Property="TextBlock.FontSize" Value="36" />
             </Style>
             <Style TargetType="TextBlock">
                 <Setter Property="FontSize" Value="36" />
             </Style>
-        </Grid.Resources>
+        </Grid.Resources>-->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="5" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="5" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="5" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-
         </Grid.RowDefinitions>
-            <TextBlock Text="{Binding Path}"></TextBlock>
-        <!--<ContentPresenter 
+            <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Path}"></TextBlock>
+        <ContentPresenter 
+            Grid.Row="1"
+            Grid.Column="0"
+            Margin="20"
+            Content="{Binding FilterListViewModel}"
+            HorizontalAlignment="Stretch" 
+            VerticalAlignment="Stretch"/>
+
+            <ContentPresenter 
+            Grid.Row="1" Grid.Column="1" 
+            Margin="20"
+            Content="{Binding GraphViewModel}"
+            HorizontalAlignment="Stretch" 
+            VerticalAlignment="Stretch"/>
+
+            <!--<ContentPresenter 
+            
+            Margin="20"
+            Content="{Binding GraphViewModel}"
+            HorizontalAlignment="Stretch" 
+            VerticalAlignment="Stretch"/>-->
+            <!--<ContentPresenter 
             Grid.Row="2"
             Margin="20"
             Content="{Binding FileFilteredViewModel}"

@@ -32,13 +32,9 @@
 
         <ItemsControl 
             Grid.Row="1"
+
             ItemsSource="{Binding FileList}"
             ></ItemsControl>
-        <!--<ContentPresenter 
-            
-            Margin="20"
-            Content="{Binding GraphViewModel}"
-            HorizontalAlignment="Stretch" 
-            VerticalAlignment="Stretch"/>-->
+
     </Grid>
 </Window>

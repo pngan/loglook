@@ -2,11 +2,15 @@
 {
     public class FileItemViewModel : ViewModelBase, IFileItemViewModel
     {
-        public FileItemViewModel(string path)
+        public FileItemViewModel(IFilterListViewModel filterListViewModel, IGraphViewModel graphViewModel,  string path)
         {
+            FilterListViewModel = filterListViewModel;
+            GraphViewModel = graphViewModel;
             Path = path;
         }
 
+        public IFilterListViewModel FilterListViewModel { get; }
+        public IGraphViewModel GraphViewModel { get; }
         public string Path { get; }
     }
 
