@@ -14,21 +14,19 @@ namespace ViewModel
     public class MainViewModel : ViewModelBase, IMainViewModel
     {
 
-        public IGraphViewModel GraphViewModel { get; }
 
         public RelayCommand OpenFileCommand { get; private set; }
 
-        //private readonly IMainModel m_model;
+        //private readonly IFileModel m_model;
         private readonly IFileSelectionService m_fileSelectionService;
         private readonly IInteractionMediator m_interactionMediator;
         private readonly Func<string, Owned<IFileItemViewModel>> m_fileItemViewModelFactory;
         public List<Owned<IFileItemViewModel>> OwnedFileList { get; } = new List<Owned<IFileItemViewModel>>();
         public ObservableCollection<IFileItemViewModel> FileList { get; } = new ObservableCollection<IFileItemViewModel>();
 
-        public MainViewModel( IGraphViewModel graphViewModel, IFileSelectionService fileSelectionService, 
-            IInteractionMediator interactionMediator, Func<string, Owned<IFileItemViewModel>> fileItemViewModelFactory)
+        public MainViewModel(  IFileSelectionService fileSelectionService, 
+            IInteractionMediator interactionMediator,  Func<string, Owned<IFileItemViewModel>> fileItemViewModelFactory)
         {
-            GraphViewModel = graphViewModel;
             m_fileSelectionService = fileSelectionService;
             m_interactionMediator = interactionMediator;
             m_fileItemViewModelFactory = fileItemViewModelFactory;

@@ -41,8 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GreetingArgs.cs" />
-    <Compile Include="IMainModel.cs" />
-    <Compile Include="MainModel.cs" />
+    <Compile Include="IFileModel.cs" />
+    <Compile Include="FileModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

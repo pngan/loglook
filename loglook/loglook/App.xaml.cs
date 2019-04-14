@@ -26,7 +26,7 @@ namespace loglook
 
         private void RegisterDependencies(ContainerBuilder builder)
         {
-            //builder.RegisterType<MainModel>().As<IMainModel>().InstancePerLifetimeScope();
+            builder.RegisterType<FileModel>().As<IFileModel>().InstancePerOwned<IFileItemViewModel>();
             builder.RegisterType<MainViewModel>().As<IMainViewModel>().InstancePerLifetimeScope();
             builder.RegisterType<FileItemViewModel>().As<IFileItemViewModel>().InstancePerLifetimeScope();
             builder.RegisterType<FileFilteredViewModel>().As<IFileFilteredViewModel>();
@@ -44,6 +44,7 @@ namespace loglook
 
         private void StartApplication(IContainer container)
         {
+
             m_lifetime = container.BeginLifetimeScope();
             var window = m_lifetime.Resolve<View.MainWindow>();
             window.Show();
