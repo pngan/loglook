@@ -16,7 +16,7 @@
         <ResourceDictionary Source="FileItemView.xaml" />
     </Window.Resources>
 
-    <Grid Margin="20" ShowGridLines="True">
+    <Grid Margin="8" ShowGridLines="True">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />

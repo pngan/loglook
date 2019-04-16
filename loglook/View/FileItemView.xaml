@@ -13,65 +13,30 @@
 
     <DataTemplate DataType="{x:Type vm:FileItemViewModel}">
 
-    <Grid Margin="20">
-        <!--<Grid.Resources>
-            <Style TargetType="TextBox">
-                <Setter Property="TextBlock.FontSize" Value="36" />
-            </Style>
-            <Style TargetType="TextBlock">
-                <Setter Property="FontSize" Value="36" />
-            </Style>
-        </Grid.Resources>-->
+    <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="300"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
             <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Path}"></TextBlock>
+
+        <ContentPresenter 
+            Grid.Row="1" Grid.Column="0" 
+            Content="{Binding GraphViewModel}"
+            HorizontalAlignment="Stretch" 
+            VerticalAlignment="Stretch"/>
+        
         <ContentPresenter 
             Grid.Row="1"
-            Grid.Column="0"
-            Margin="20"
+            Grid.Column="1"
             Content="{Binding FilterListViewModel}"
             HorizontalAlignment="Stretch" 
             VerticalAlignment="Stretch"/>
 
-        <ContentPresenter 
-            Grid.Row="1" Grid.Column="1" 
-            Margin="20"
-            Content="{Binding GraphViewModel}"
-            HorizontalAlignment="Stretch" 
-            VerticalAlignment="Stretch"/>
-
-            <!--<ContentPresenter 
-            
-            Margin="20"
-            Content="{Binding GraphViewModel}"
-            HorizontalAlignment="Stretch" 
-            VerticalAlignment="Stretch"/>-->
-            <!--<ContentPresenter 
-            Grid.Row="2"
-            Margin="20"
-            Content="{Binding FileFilteredViewModel}"
-            HorizontalAlignment="Stretch" 
-            VerticalAlignment="Stretch"/>
-        <GridSplitter Grid.Row="3" Height="5" HorizontalAlignment="Stretch" />
-        <ContentPresenter 
-            Grid.Row="4"
-            Margin="20"
-            Content="{Binding FilterListViewModel}"
-            HorizontalAlignment="Stretch" 
-            VerticalAlignment="Stretch"/>
-        <GridSplitter Grid.Row="5" Height="5" HorizontalAlignment="Stretch" />
-        <ContentPresenter 
-            Grid.Row="6" 
-            Margin="20"
-            Content="{Binding FileRawViewModel}"
-            HorizontalAlignment="Stretch" 
-            VerticalAlignment="Stretch"/>-->
         </Grid>
     </DataTemplate>
 </ResourceDictionary>

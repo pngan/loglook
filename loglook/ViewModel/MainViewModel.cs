@@ -39,11 +39,6 @@ namespace ViewModel
             var fileVm = m_fileItemViewModelFactory(path);
             OwnedFileList.Add(fileVm);
             FileList.Add(fileVm.Value);
-
-
-
-
-
             var args = new RequestFileWindowArgs(windowOwner, path);
             //m_interactionMediator.RequestFileWindow(this, args);
         }

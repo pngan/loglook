@@ -21,8 +21,14 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <ListBox x:Name="PhoneNumbers"
-                             Grid.Row="0"
+
+                <Button 
+                    Grid.Row="0"
+                    Command="{Binding AddSearchStringCommand}"
+                    HorizontalAlignment="Left" Width="80">Add Search String</Button>
+
+                <ListBox x:Name="FilterItems"
+                             Grid.Row="1"
                              MaxWidth="{Binding ElementName=ScrollViewer,
                                                 Path=ViewportWidth}"
                              HorizontalAlignment="Stretch"
@@ -31,12 +37,10 @@
                              IsSynchronizedWithCurrentItem="True"
                              IsTabStop="False"
                              ItemTemplate="{StaticResource FilterItemView}"
-                             ItemsSource="{Binding Addresses}"
+                             ItemsSource="{Binding FilterItems}"
                              KeyboardNavigation.DirectionalNavigation="Continue"
                              Padding="2"
                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                             SelectedItem="{Binding SelectedEndpoint, Mode=TwoWay}"
-                             
                              >
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -44,7 +48,7 @@
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
                 </ListBox>
-                <Button Grid.Row="1" HorizontalAlignment="Right" >Add Filter</Button>
+
             </Grid>
         </ScrollViewer>
     </DataTemplate>

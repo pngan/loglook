@@ -91,6 +91,9 @@
     <PackageReference Include="Autofac">
       <Version>4.9.2</Version>
     </PackageReference>
+    <PackageReference Include="LiveCharts.Wpf">
+      <Version>0.9.7</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Converter\" />

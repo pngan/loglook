@@ -4,8 +4,29 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:View"
-             xmlns:vm="clr-namespace:ViewModel;assembly=ViewModel" >
+             xmlns:vm="clr-namespace:ViewModel;assembly=ViewModel"
+             xmlns:lc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf">
     <DataTemplate DataType="{x:Type vm:GraphViewModel}">
-        <TextBlock Text="{Binding LineCount}"/>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="600"></RowDefinition>
+            </Grid.RowDefinitions>
+            <!--<Button Grid.Row="0" Margin="10" Click="RandomizeOnClick">Randomize</Button>-->
+            <lc:CartesianChart Grid.Row="1" LegendLocation="Bottom" DataClickCommand="{Binding NewDataCommand}">
+                <lc:CartesianChart.Series>
+                    <lc:ScatterSeries Title="Series A" Values="{Binding ValuesA}" />
+                    <lc:ScatterSeries Title="Series B" Values="{Binding ValuesB}"
+                                   PointGeometry="{x:Static lc:DefaultGeometries.Diamond}" />
+                    <lc:ScatterSeries Title="Series C" Values="{Binding ValuesC}"
+                                   PointGeometry="{x:Static lc:DefaultGeometries.Triangle}"
+                                   StrokeThickness="2" Fill="Transparent"/>
+                </lc:CartesianChart.Series>
+                <lc:CartesianChart.AxisY>
+                    <!--setting the axis unit improved the labels rounding rule-->
+                    <lc:Axis Unit="1"></lc:Axis>
+                </lc:CartesianChart.AxisY>
+            </lc:CartesianChart>
+        </Grid>
     </DataTemplate>
 </ResourceDictionary>

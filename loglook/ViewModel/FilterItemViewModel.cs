@@ -1,20 +1,39 @@
-﻿namespace ViewModel
+﻿using Model;
+
+namespace ViewModel
 {
     public class FilterItemViewModel : ViewModelBase, IFilterItemViewModel
     {
-        public IFilterItemViewModel FileItemViewModel { get; }
-        public IGraphViewModel GraphViewModel { get; }
+        private readonly IFileModel m_fileModel;
+        private string m_searchString;
+        private bool m_isVisible = true;
 
-        public FilterItemViewModel(IFilterItemViewModel fileItemViewModel, IGraphViewModel graphViewModel)
+        public FilterItemViewModel(IFileModel fileModel)
         {
-            FileItemViewModel = fileItemViewModel;
-            GraphViewModel = graphViewModel;
+            m_fileModel = fileModel;
+            m_searchString = fileModel.FilePath;
+            MatchCount = 0;
         }
+
+        public string SearchString
+        {
+            get => m_searchString;
+            set => SetField(ref m_searchString, value);
+        }
+
+        public bool IsVisible
+        {
+            get => m_isVisible;
+            set => SetField(ref m_isVisible, value);
+        }
+
+        public int MatchCount { get; }
     }
 
     public interface IFilterItemViewModel
     {
-        IFilterItemViewModel FileItemViewModel { get; }
-        IGraphViewModel GraphViewModel { get; }
+        string SearchString { get; set; }
+        bool IsVisible { get; set; }
+        int MatchCount { get; }
     }
 }
