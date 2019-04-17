@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using LiveCharts;
 using LiveCharts.Defaults;
+using LiveCharts.Definitions.Series;
+using LiveCharts.Wpf;
 using Model;
 
 namespace ViewModel
@@ -12,6 +14,7 @@ namespace ViewModel
     {
         private readonly IFileModel m_fileModel;
         private int? m_lineCount;
+        private SeriesCollection m_seriesCollection;
 
         public GraphViewModel(IFileModel fileModel)
         {
@@ -31,7 +34,14 @@ namespace ViewModel
                 ValuesB.Add(new ObservablePoint(r.NextDouble() * 10, r.NextDouble() * 10));
                 ValuesC.Add(new ObservablePoint(r.NextDouble() * 10, r.NextDouble() * 10));
             }
-
+            m_seriesCollection = new SeriesCollection();
+            var series = new ScatterSeries();
+            series.Title = m_fileModel.FilePath;
+            var p = new ScatterPoint(1, 2);
+            var v = new ChartValues<ScatterPoint>();
+            v.Add(p);
+            series.Values = v;
+            m_seriesCollection.Add(series);
         }
 
         private void NewData(object obj)
@@ -72,6 +82,8 @@ namespace ViewModel
             }
         }
 
+        public SeriesCollection SeriesCollection => m_seriesCollection;
+
         private async Task<int> GetLineCountAsync()
         {
             return await m_fileModel.GetLineCountAsync();
@@ -82,5 +94,7 @@ namespace ViewModel
     {
         string Name { get; }
         int LineCount { get; }
+
+        SeriesCollection SeriesCollection { get; }
     }
 }
