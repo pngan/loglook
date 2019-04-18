@@ -21,7 +21,7 @@
                 UpdateSourceTrigger=PropertyChanged}"/>
             <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" >
                 <TextBlock Text="Matches: "/>
-                <TextBlock Text="{Binding MatchCount}"/>
+                <TextBlock Text="{Binding MatchCount, Mode=OneWay}"/>
             </StackPanel>
 
         </Grid>

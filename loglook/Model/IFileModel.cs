@@ -5,8 +5,10 @@ namespace Model
 {
     public interface IFileModel
     {
+        event EventHandler<SeriesAddedOrChangedArgs> OnSeriesAddedOrChanged;
+
         string FilePath { get; }
         Task<int> GetLineCountAsync();
-        void AddOrChangeSearchString(string searchString);
+        Task AddOrChangeSearchString(string searchString);
     }
 }

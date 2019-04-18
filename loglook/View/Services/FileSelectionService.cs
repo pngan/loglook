@@ -8,9 +8,9 @@ namespace View.Services
         public string GetFilePath(string defaultPath)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.FileName = "Document"; // Default file name
-            openFileDialog.DefaultExt = ".txt"; // Default file extension
-            openFileDialog.Filter = "Text documents (.txt)|*.txt"; // Filter files by extension
+            openFileDialog.FileName = "Log"; // Default file name
+            openFileDialog.DefaultExt = ".log"; // Default file extension
+            openFileDialog.Filter = "Log files (.log)|*.log"; // Filter files by extension
 
                 if (openFileDialog.ShowDialog() == true)
                 {

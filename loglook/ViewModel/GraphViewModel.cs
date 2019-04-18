@@ -13,11 +13,6 @@ using Model;
 
 namespace ViewModel
 {
-    public class DateModel
-    {
-        public System.DateTime DateTime { get; set; }
-        public double Value { get; set; }
-    }
     public class GraphViewModel : ViewModelBase, IGraphViewModel
     {
         private readonly IFileModel m_fileModel;
@@ -29,6 +24,7 @@ namespace ViewModel
         public GraphViewModel(IFileModel fileModel)
         {
             m_fileModel = fileModel;
+            m_fileModel.OnSeriesAddedOrChanged += FileModelOnOnSeriesAddedOrChanged;
 
             NewDataCommand = new RelayCommand(NewData);
 
@@ -44,11 +40,18 @@ namespace ViewModel
             series.Title = m_fileModel.FilePath;
             var v = new ChartValues<DateModel>();
             var r = new Random();
-            v.Add(new DateModel { DateTime = DateTime.Now, Value = r.NextDouble() * 10 });
-            v.Add(new DateModel { DateTime = DateTime.Now - TimeSpan.FromHours(0.5), Value = r.NextDouble() * 10 });
-            v.Add(new DateModel { DateTime = DateTime.Now - TimeSpan.FromHours(1), Value = r.NextDouble() * 10 });
+            v.Add(new DateModel(DateTime.Now, r.Next(0, 100) * 10));
+            v.Add(new DateModel(DateTime.Now - TimeSpan.FromHours(0.5), r.Next(0, 100) * 10));
+            v.Add(new DateModel(DateTime.Now - TimeSpan.FromHours(1), r.Next(0, 100) * 10));
             series.Values = v;
             m_seriesCollection.Add(series);
+        }
+
+        private void FileModelOnOnSeriesAddedOrChanged(object sender, SeriesAddedOrChangedArgs e)
+        {
+            var values = m_seriesCollection.First().Values;
+            values.Clear();
+            values.AddRange(e?.DatedData?.Values);
         }
 
         private void NewData(object obj)
@@ -56,9 +59,9 @@ namespace ViewModel
             var r = new Random();
             var values = m_seriesCollection.First().Values;
             values.Clear();
-            values.Add(new DateModel { DateTime = DateTime.Now, Value = r.NextDouble() * 10 });
-            values.Add(new DateModel { DateTime = DateTime.Now - TimeSpan.FromHours(0.5), Value = r.NextDouble() * 10 });
-            values.Add(new DateModel { DateTime = DateTime.Now - TimeSpan.FromHours(1), Value = r.NextDouble() * 10 });
+            values.Add(new DateModel(DateTime.Now, r.Next(0, 100) * 10));
+            values.Add(new DateModel(DateTime.Now - TimeSpan.FromHours(0.5), r.Next(0, 100) * 10));
+            values.Add(new DateModel(DateTime.Now - TimeSpan.FromHours(1), r.Next(0, 100) * 10));
         }
         public string Name => "GraphViewModel";
 

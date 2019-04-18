@@ -11,6 +11,7 @@ namespace ViewModel
         private string m_searchString;
         private bool m_isVisible = true;
         private readonly Subject<string> m_stringSubject = new Subject<string>();
+        private int m_matchCount;
 
         public FilterItemViewModel(IFileModel fileModel)
         {
@@ -23,6 +24,13 @@ namespace ViewModel
                 {
                     m_fileModel.AddOrChangeSearchString(x);
                 });
+            m_fileModel.OnSeriesAddedOrChanged += FileModelOnOnSeriesAddedOrChanged;
+
+        }
+
+        private void FileModelOnOnSeriesAddedOrChanged(object sender, SeriesAddedOrChangedArgs e)
+        {
+            MatchCount = e?.NumberOfMatches ?? 0;
         }
 
         public string SearchString
@@ -41,7 +49,11 @@ namespace ViewModel
             set => SetField(ref m_isVisible, value);
         }
 
-        public int MatchCount { get; }
+        public int MatchCount
+        {
+            get => m_matchCount;
+            private set => SetField(ref m_matchCount, value);
+        }
     }
 
     public interface IFilterItemViewModel

@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DateModel.cs" />
     <Compile Include="GreetingArgs.cs" />
     <Compile Include="IFileModel.cs" />
     <Compile Include="FileModel.cs" />
