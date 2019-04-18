@@ -10,21 +10,9 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="600"></RowDefinition>
+                <RowDefinition Height="400"></RowDefinition>
             </Grid.RowDefinitions>
-            <!--<Button Grid.Row="0" Margin="10" Click="RandomizeOnClick">Randomize</Button>-->
-            <lc:CartesianChart Grid.Row="1" LegendLocation="Bottom" DataClickCommand="{Binding NewDataCommand}" Series="{Binding SeriesCollection}" >
-                <!--<lc:CartesianChart.Series  >
-                    <lc:ScatterSeries Title="Series A" Values="{Binding ValuesA}" />
-                    <lc:ScatterSeries Title="Series B" Values="{Binding ValuesB}"
-                                   PointGeometry="{x:Static lc:DefaultGeometries.Diamond}" />
-                    <lc:ScatterSeries Title="Series C" Values="{Binding ValuesC}"
-                                   PointGeometry="{x:Static lc:DefaultGeometries.Triangle}"
-                                   StrokeThickness="2" Fill="Transparent"/>
-                </lc:CartesianChart.Series>-->
-
-
-
+            <lc:CartesianChart Grid.Row="1" LegendLocation="Bottom" DataClickCommand="{Binding InspectDataCommand}" Series="{Binding SeriesCollection}" >
                 <lc:CartesianChart.AxisX>
                     <lc:Axis LabelFormatter="{Binding Formatter}"></lc:Axis>
                 </lc:CartesianChart.AxisX>

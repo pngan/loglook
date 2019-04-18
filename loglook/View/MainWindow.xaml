@@ -16,25 +16,25 @@
         <ResourceDictionary Source="FileItemView.xaml" />
     </Window.Resources>
 
-    <Grid Margin="8" ShowGridLines="True">
+    <Grid Margin="8">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Button 
+        <Button
             Grid.Row="0"
             Command="{Binding OpenFileCommand}"
             CommandParameter="{Binding RelativeSource=
                                          { RelativeSource FindAncestor, 
                                            AncestorType={x:Type Window},
                                            AncestorLevel=1}}"
-            HorizontalAlignment="Left" Width="80">Open File...</Button>
+            HorizontalAlignment="Left" Width="120" Height="40">
+            Add File...
+        </Button>
 
-        <ItemsControl 
+        <ItemsControl
             Grid.Row="1"
-
-            ItemsSource="{Binding FileList}"
-            ></ItemsControl>
+            ItemsSource="{Binding FileList}" />
 
     </Grid>
 </Window>

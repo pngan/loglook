@@ -17,6 +17,7 @@ namespace ViewModel
             m_fileModel = fileModel;
             m_filterItemViewModelFactory = filterItemViewModelFactory;
             AddSearchStringCommand = new RelayCommand(AddSearchString);
+            AddSearchString("*All*");
         }
 
         public RelayCommand AddSearchStringCommand { get; }
@@ -34,9 +35,18 @@ namespace ViewModel
             new ObservableCollection<IFilterItemViewModel>();
 
 
-        private void AddSearchString(object notused)
+        private void AddSearchString(object reservedSearchStringIn)
         {
+            var reservedSearchString = reservedSearchStringIn as string;
             var newFilterItem = m_filterItemViewModelFactory(m_ownedFilterItems.Count);
+            if (!string.IsNullOrWhiteSpace(reservedSearchString))
+            {
+                if (reservedSearchString.Equals("*All*"))
+                {
+                    newFilterItem.Value.SearchString = reservedSearchString;
+                    newFilterItem.Value.IsReservedSearchString = true;
+                }
+            }
             m_ownedFilterItems.Add(newFilterItem);
             FilterItems.Add(newFilterItem.Value);
         }

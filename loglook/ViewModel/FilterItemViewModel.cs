@@ -14,6 +14,7 @@ namespace ViewModel
         private bool m_isVisible = true;
         private readonly Subject<string> m_stringSubject = new Subject<string>();
         private int m_matchCount;
+        private bool m_isReservedSearchString;
 
         public FilterItemViewModel(int index, IFileModel fileModel)
         {
@@ -62,6 +63,12 @@ namespace ViewModel
             get => m_matchCount;
             private set => SetField(ref m_matchCount, value);
         }
+
+        public bool IsReservedSearchString
+        {
+            get => m_isReservedSearchString;
+            set => SetField(ref m_isReservedSearchString, value);
+        }
     }
 
     public interface IFilterItemViewModel
@@ -69,5 +76,6 @@ namespace ViewModel
         string SearchString { get; set; }
         bool IsVisible { get; set; }
         int MatchCount { get; }
+        bool IsReservedSearchString { get; set; }
     }
 }

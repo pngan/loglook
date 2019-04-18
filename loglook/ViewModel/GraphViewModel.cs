@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Input;
 using LiveCharts;
 using LiveCharts.Configurations;
-using LiveCharts.Defaults;
-using LiveCharts.Definitions.Series;
 using LiveCharts.Wpf;
 using Model;
 
@@ -17,64 +12,27 @@ namespace ViewModel
     {
         private readonly IFileModel m_fileModel;
         private int? m_lineCount;
-        private readonly SeriesCollection m_seriesCollection;
-
-        public Func<double, string> Formatter { get; set; }
 
         public GraphViewModel(IFileModel fileModel)
         {
             m_fileModel = fileModel;
             m_fileModel.OnSeriesAddedOrChanged += FileModelOnOnSeriesAddedOrChanged;
 
-            NewDataCommand = new RelayCommand(NewData);
+            InspectDataCommand = new RelayCommand(InspectData);
 
-            Formatter = value => new System.DateTime((long)(value * TimeSpan.FromHours(1).Ticks)).ToString("t");
-
+            Formatter = value => new DateTime((long) (value * TimeSpan.FromHours(1).Ticks)).ToString("t");
 
             var dayConfig = Mappers.Xy<DateModel>()
-                .X(dayModel => (double)dayModel.DateTime.Ticks / TimeSpan.FromHours(1).Ticks)
+                .X(dayModel => (double) dayModel.DateTime.Ticks / TimeSpan.FromHours(1).Ticks)
                 .Y(dayModel => dayModel.Value);
 
-            m_seriesCollection = new SeriesCollection(dayConfig);
-            CreateSeries();
+            SeriesCollection = new SeriesCollection(dayConfig);
+            CreateSeries("");
         }
 
-        private void CreateSeries()
-        {
-            var series = new ScatterSeries();
-            series.Title = m_fileModel.FilePath;
-            var v = new ChartValues<DateModel>();
-            series.Values = v;
-            m_seriesCollection.Add(series);
-        }
+        public RelayCommand InspectDataCommand { get; }
 
-        private void FileModelOnOnSeriesAddedOrChanged(object sender, SeriesAddedOrChangedArgs e)
-        {
-            System.Windows.Application.Current.Dispatcher.Invoke(() =>
-            {
-                int index = e.Index;
-                if (m_seriesCollection.Count <= index)
-                {
-                    CreateSeries();
-                }
-                var values = m_seriesCollection[index].Values;
-                values.Clear();
-                values.AddRange(e?.DatedData?.Values);
-            });
-        }
-
-        private void NewData(object obj)
-        {
-            var r = new Random();
-            var values = m_seriesCollection.First().Values;
-            values.Clear();
-            values.Add(new DateModel(DateTime.Now, r.Next(0, 100) * 10));
-            values.Add(new DateModel(DateTime.Now - TimeSpan.FromHours(0.5), r.Next(0, 100) * 10));
-            values.Add(new DateModel(DateTime.Now - TimeSpan.FromHours(1), r.Next(0, 100) * 10));
-        }
-        public string Name => "GraphViewModel";
-
-        public RelayCommand NewDataCommand { get; }
+        public Func<double, string> Formatter { get; set; }
 
         public int LineCount
         {
@@ -91,7 +49,35 @@ namespace ViewModel
             }
         }
 
-        public SeriesCollection SeriesCollection => m_seriesCollection;
+        public SeriesCollection SeriesCollection { get; }
+
+        private void CreateSeries(string legend)
+        {
+            var series = new ScatterSeries();
+            series.Title = legend;
+            var v = new ChartValues<DateModel>();
+            series.Values = v;
+            SeriesCollection.Add(series);
+        }
+
+        private void FileModelOnOnSeriesAddedOrChanged(object sender, SeriesAddedOrChangedArgs e)
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                var index = e.Index;
+                if (SeriesCollection.Count <= index)
+                    CreateSeries(e.DatedData.Title);
+                var values = SeriesCollection[index].Values;
+                values.Clear();
+                values.AddRange(e?.DatedData?.Values);
+                ((ScatterSeries) SeriesCollection[index]).Title = e.DatedData.Title;
+            });
+        }
+
+        private void InspectData(object obj)
+        {
+            // todo command to further inspect data point
+        }
 
         private async Task<int> GetLineCountAsync()
         {
@@ -101,7 +87,6 @@ namespace ViewModel
 
     public interface IGraphViewModel
     {
-        string Name { get; }
         int LineCount { get; }
 
         SeriesCollection SeriesCollection { get; }

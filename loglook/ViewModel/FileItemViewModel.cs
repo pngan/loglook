@@ -14,14 +14,11 @@ namespace ViewModel
             string path)
         {
             m_fileModel = fileModelFactory(path);
-            //m_fileModel = fileModel();
-
             m_filterListViewModel = filterListViewModel.Value;
             m_graphViewModel = graphViewModel.Value;
             Path = path;
         }
 
-        //private readonly Owned<IFileModel> m_fileModel;
         private readonly IFilterListViewModel m_filterListViewModel;
         private readonly IGraphViewModel m_graphViewModel;
 

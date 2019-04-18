@@ -67,14 +67,15 @@ namespace Model
 
         public async Task AddOrChangeSearchString(int index, string searchString)
         {
-            if (!File.Exists(FilePath))
+            if (!File.Exists(FilePath) || string.IsNullOrWhiteSpace(searchString))
             {
                 return;
             }
 
-            int numberOfMatches = 0;
+            int totalMatches = 0;
             var series = await Task.Run(async () =>
             {
+
                 using (var sr = File.OpenText(FilePath))
                 {
                     var values = new List<DateModel>();
@@ -87,27 +88,28 @@ namespace Model
                         if (!DateTime.TryParse(possibleTimeStamp, out var t))
                             continue;
 
-                        if (CultureInfo.CurrentCulture.CompareInfo.IndexOf(s.Substring(11), searchString,
-                                CompareOptions.IgnoreCase) < 0)
-                            continue;   // no string match
+                        if (!searchString.Equals("*All*", StringComparison.Ordinal))
+                            if (CultureInfo.CurrentCulture.CompareInfo.IndexOf(s.Substring(11), searchString,
+                                    CompareOptions.IgnoreCase) < 0)
+                                continue;   // no string match
 
                         var timeStamp = new DateTime(t.Year, t.Month, t.Day, t.Hour, t.Minute, t.Second);
                         if (!values.Any())
                             values.Add(new DateModel(timeStamp));
-                        var latest = values.Last();
-                        if ((timeStamp - latest.DateTime) >= TimeSpan.FromSeconds(1))
+                        var latestPoint = values.Last();
+                        if ((timeStamp - latestPoint.DateTime) >= TimeSpan.FromSeconds(1))
                         {
-                            latest = new DateModel(timeStamp);
-                            values.Add(latest);
+                            latestPoint = new DateModel(timeStamp);
+                            values.Add(latestPoint);
                         }
-                        latest.IncrementCount();
-                        numberOfMatches++;
+                        latestPoint.IncrementCount();
+                        totalMatches++;
                     }
                     return new DatedDataSeries(values, searchString);
                 }
             });
 
-            OnSeriesAddedOrChanged?.Invoke(this, new SeriesAddedOrChangedArgs(series, numberOfMatches, index));
+            OnSeriesAddedOrChanged?.Invoke(this, new SeriesAddedOrChangedArgs(series, totalMatches, index));
         }
     }
 }
