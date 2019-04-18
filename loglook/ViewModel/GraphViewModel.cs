@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using LiveCharts;
+using LiveCharts.Configurations;
 using LiveCharts.Defaults;
 using LiveCharts.Definitions.Series;
 using LiveCharts.Wpf;
@@ -10,11 +13,18 @@ using Model;
 
 namespace ViewModel
 {
+    public class DateModel
+    {
+        public System.DateTime DateTime { get; set; }
+        public double Value { get; set; }
+    }
     public class GraphViewModel : ViewModelBase, IGraphViewModel
     {
         private readonly IFileModel m_fileModel;
         private int? m_lineCount;
-        private SeriesCollection m_seriesCollection;
+        private readonly SeriesCollection m_seriesCollection;
+
+        public Func<double, string> Formatter { get; set; }
 
         public GraphViewModel(IFileModel fileModel)
         {
@@ -22,24 +32,21 @@ namespace ViewModel
 
             NewDataCommand = new RelayCommand(NewData);
 
+            Formatter = value => new System.DateTime((long)(value * TimeSpan.FromHours(1).Ticks)).ToString("t");
 
-            var r = new Random();
-            ValuesA = new ChartValues<ObservablePoint>();
-            ValuesB = new ChartValues<ObservablePoint>();
-            ValuesC = new ChartValues<ObservablePoint>();
 
-            for (var i = 0; i < 20; i++)
-            {
-                ValuesA.Add(new ObservablePoint(r.NextDouble() * 10, r.NextDouble() * 10));
-                ValuesB.Add(new ObservablePoint(r.NextDouble() * 10, r.NextDouble() * 10));
-                ValuesC.Add(new ObservablePoint(r.NextDouble() * 10, r.NextDouble() * 10));
-            }
-            m_seriesCollection = new SeriesCollection();
+            var dayConfig = Mappers.Xy<DateModel>()
+                .X(dayModel => (double)dayModel.DateTime.Ticks / TimeSpan.FromHours(1).Ticks)
+                .Y(dayModel => dayModel.Value);
+
+            m_seriesCollection = new SeriesCollection(dayConfig);
             var series = new ScatterSeries();
             series.Title = m_fileModel.FilePath;
-            var p = new ScatterPoint(1, 2);
-            var v = new ChartValues<ScatterPoint>();
-            v.Add(p);
+            var v = new ChartValues<DateModel>();
+            var r = new Random();
+            v.Add(new DateModel { DateTime = DateTime.Now, Value = r.NextDouble() * 10 });
+            v.Add(new DateModel { DateTime = DateTime.Now - TimeSpan.FromHours(0.5), Value = r.NextDouble() * 10 });
+            v.Add(new DateModel { DateTime = DateTime.Now - TimeSpan.FromHours(1), Value = r.NextDouble() * 10 });
             series.Values = v;
             m_seriesCollection.Add(series);
         }
@@ -47,22 +54,12 @@ namespace ViewModel
         private void NewData(object obj)
         {
             var r = new Random();
-            for (var i = 0; i < 20; i++)
-            {
-                ValuesA[i].X = r.NextDouble() * 10;
-                ValuesA[i].Y = r.NextDouble() * 10;
-                ValuesB[i].X = r.NextDouble() * 10;
-                ValuesB[i].Y = r.NextDouble() * 10;
-                ValuesC[i].X = r.NextDouble() * 10;
-                ValuesC[i].Y = r.NextDouble() * 10;
-            }
+            var values = m_seriesCollection.First().Values;
+            values.Clear();
+            values.Add(new DateModel { DateTime = DateTime.Now, Value = r.NextDouble() * 10 });
+            values.Add(new DateModel { DateTime = DateTime.Now - TimeSpan.FromHours(0.5), Value = r.NextDouble() * 10 });
+            values.Add(new DateModel { DateTime = DateTime.Now - TimeSpan.FromHours(1), Value = r.NextDouble() * 10 });
         }
-
-        public Dictionary<int, double> ChartValues { get; } = new Dictionary<int, double>();
-
-        public ChartValues<ObservablePoint> ValuesA { get; set; }
-        public ChartValues<ObservablePoint> ValuesB { get; set; }
-        public ChartValues<ObservablePoint> ValuesC { get; set; }
         public string Name => "GraphViewModel";
 
         public RelayCommand NewDataCommand { get; }
@@ -96,5 +93,7 @@ namespace ViewModel
         int LineCount { get; }
 
         SeriesCollection SeriesCollection { get; }
+
+        Func<double, string> Formatter { get; }
     }
 }

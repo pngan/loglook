@@ -2,16 +2,19 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Autofac.Features.OwnedInstances;
+using Model;
 
 namespace ViewModel
 {
     public class FilterListViewModel : ViewModelBase, IFilterListViewModel, IDisposable
     {
+        private readonly IFileModel m_fileModel;
         private readonly Func<Owned<IFilterItemViewModel>> m_filterItemViewModelFactory;
         private readonly List<Owned<IFilterItemViewModel>> m_ownedFilterItems = new List<Owned<IFilterItemViewModel>>();
 
-        public FilterListViewModel(Func<Owned<IFilterItemViewModel>> filterItemViewModelFactory)
+        public FilterListViewModel(IFileModel fileModel, Func<Owned<IFilterItemViewModel>> filterItemViewModelFactory)
         {
+            m_fileModel = fileModel;
             m_filterItemViewModelFactory = filterItemViewModelFactory;
             AddSearchStringCommand = new RelayCommand(AddSearchString);
         }

@@ -32,5 +32,10 @@ namespace Model
 
             return lineCount;
         }
+
+        public void AddOrChangeSearchString(string searchString)
+        {
+            
+        }
     }
 }

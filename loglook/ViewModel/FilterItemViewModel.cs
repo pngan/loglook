@@ -1,4 +1,7 @@
-﻿using Model;
+﻿using System;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
+using Model;
 
 namespace ViewModel
 {
@@ -7,18 +10,25 @@ namespace ViewModel
         private readonly IFileModel m_fileModel;
         private string m_searchString;
         private bool m_isVisible = true;
+        private readonly Subject<string> m_stringSubject = new Subject<string>();
 
         public FilterItemViewModel(IFileModel fileModel)
         {
             m_fileModel = fileModel;
-            m_searchString = fileModel.FilePath;
             MatchCount = 0;
+            IObserver<string> obs;
+            m_stringSubject.AsObservable()
+                .Subscribe(obs);
         }
 
         public string SearchString
         {
             get => m_searchString;
-            set => SetField(ref m_searchString, value);
+            set
+            {
+                SetField(ref m_searchString, value);
+                m_stringSubject.OnNext(value);
+            }
         }
 
         public bool IsVisible

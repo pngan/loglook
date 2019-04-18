@@ -22,6 +22,12 @@
                                    PointGeometry="{x:Static lc:DefaultGeometries.Triangle}"
                                    StrokeThickness="2" Fill="Transparent"/>
                 </lc:CartesianChart.Series>-->
+
+
+
+                <lc:CartesianChart.AxisX>
+                    <lc:Axis LabelFormatter="{Binding Formatter}"></lc:Axis>
+                </lc:CartesianChart.AxisX>
                 <lc:CartesianChart.AxisY>
                     <!--setting the axis unit improved the labels rounding rule-->
                     <lc:Axis Unit="1"></lc:Axis>
