@@ -36,22 +36,31 @@ namespace ViewModel
                 .Y(dayModel => dayModel.Value);
 
             m_seriesCollection = new SeriesCollection(dayConfig);
+            CreateSeries();
+        }
+
+        private void CreateSeries()
+        {
             var series = new ScatterSeries();
             series.Title = m_fileModel.FilePath;
             var v = new ChartValues<DateModel>();
-            var r = new Random();
-            v.Add(new DateModel(DateTime.Now, r.Next(0, 100) * 10));
-            v.Add(new DateModel(DateTime.Now - TimeSpan.FromHours(0.5), r.Next(0, 100) * 10));
-            v.Add(new DateModel(DateTime.Now - TimeSpan.FromHours(1), r.Next(0, 100) * 10));
             series.Values = v;
             m_seriesCollection.Add(series);
         }
 
         private void FileModelOnOnSeriesAddedOrChanged(object sender, SeriesAddedOrChangedArgs e)
         {
-            var values = m_seriesCollection.First().Values;
-            values.Clear();
-            values.AddRange(e?.DatedData?.Values);
+            System.Windows.Application.Current.Dispatcher.Invoke(() =>
+            {
+                int index = e.Index;
+                if (m_seriesCollection.Count <= index)
+                {
+                    CreateSeries();
+                }
+                var values = m_seriesCollection[index].Values;
+                values.Clear();
+                values.AddRange(e?.DatedData?.Values);
+            });
         }
 
         private void NewData(object obj)

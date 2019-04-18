@@ -24,11 +24,14 @@ namespace Model
     {
         public DatedDataSeries DatedData { get; }
         public int NumberOfMatches { get; }
+        
+        public int Index { get; }
 
-        public SeriesAddedOrChangedArgs(DatedDataSeries data, int numberOfMatches)
+        public SeriesAddedOrChangedArgs(DatedDataSeries data, int numberOfMatches, int index)
         {
             DatedData = data;
             NumberOfMatches = numberOfMatches;
+            Index = index;
         }
     }
     public class FileModel : IFileModel
@@ -62,7 +65,7 @@ namespace Model
             return lineCount;
         }
 
-        public async Task AddOrChangeSearchString(string searchString)
+        public async Task AddOrChangeSearchString(int index, string searchString)
         {
             if (!File.Exists(FilePath))
             {
@@ -104,7 +107,7 @@ namespace Model
                 }
             });
 
-            OnSeriesAddedOrChanged?.Invoke(this, new SeriesAddedOrChangedArgs(series, numberOfMatches));
+            OnSeriesAddedOrChanged?.Invoke(this, new SeriesAddedOrChangedArgs(series, numberOfMatches, index));
         }
     }
 }

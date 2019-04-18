@@ -1,20 +1,23 @@
 ﻿using System;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using System.Windows.Threading;
 using Model;
 
 namespace ViewModel
 {
     public class FilterItemViewModel : ViewModelBase, IFilterItemViewModel
     {
+        private readonly int m_index;
         private readonly IFileModel m_fileModel;
         private string m_searchString;
         private bool m_isVisible = true;
         private readonly Subject<string> m_stringSubject = new Subject<string>();
         private int m_matchCount;
 
-        public FilterItemViewModel(IFileModel fileModel)
+        public FilterItemViewModel(int index, IFileModel fileModel)
         {
+            m_index = index;
             m_fileModel = fileModel;
             MatchCount = 0;
             IObserver<string> obs;
@@ -22,7 +25,7 @@ namespace ViewModel
                 .Throttle(TimeSpan.FromMilliseconds(1000))
                 .Subscribe(x =>
                 {
-                    m_fileModel.AddOrChangeSearchString(x);
+                    m_fileModel.AddOrChangeSearchString(m_index, x);
                 });
             m_fileModel.OnSeriesAddedOrChanged += FileModelOnOnSeriesAddedOrChanged;
 
@@ -30,7 +33,12 @@ namespace ViewModel
 
         private void FileModelOnOnSeriesAddedOrChanged(object sender, SeriesAddedOrChangedArgs e)
         {
-            MatchCount = e?.NumberOfMatches ?? 0;
+            System.Windows.Application.Current.Dispatcher.Invoke(() =>
+            {
+                if (e.Index != m_index)
+                    return;
+                MatchCount = e?.NumberOfMatches ?? 0;
+            });
         }
 
         public string SearchString

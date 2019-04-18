@@ -9,6 +9,6 @@ namespace Model
 
         string FilePath { get; }
         Task<int> GetLineCountAsync();
-        Task AddOrChangeSearchString(string searchString);
+        Task AddOrChangeSearchString(int index, string searchString);
     }
 }

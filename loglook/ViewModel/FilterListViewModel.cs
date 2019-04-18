@@ -9,10 +9,10 @@ namespace ViewModel
     public class FilterListViewModel : ViewModelBase, IFilterListViewModel, IDisposable
     {
         private readonly IFileModel m_fileModel;
-        private readonly Func<Owned<IFilterItemViewModel>> m_filterItemViewModelFactory;
+        private readonly Func<int, Owned<IFilterItemViewModel>> m_filterItemViewModelFactory;
         private readonly List<Owned<IFilterItemViewModel>> m_ownedFilterItems = new List<Owned<IFilterItemViewModel>>();
 
-        public FilterListViewModel(IFileModel fileModel, Func<Owned<IFilterItemViewModel>> filterItemViewModelFactory)
+        public FilterListViewModel(IFileModel fileModel, Func<int, Owned<IFilterItemViewModel>> filterItemViewModelFactory)
         {
             m_fileModel = fileModel;
             m_filterItemViewModelFactory = filterItemViewModelFactory;
@@ -36,7 +36,7 @@ namespace ViewModel
 
         private void AddSearchString(object notused)
         {
-            var newFilterItem = m_filterItemViewModelFactory();
+            var newFilterItem = m_filterItemViewModelFactory(m_ownedFilterItems.Count);
             m_ownedFilterItems.Add(newFilterItem);
             FilterItems.Add(newFilterItem.Value);
         }
