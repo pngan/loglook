@@ -18,7 +18,11 @@ namespace ViewModel
             MatchCount = 0;
             IObserver<string> obs;
             m_stringSubject.AsObservable()
-                .Subscribe(obs);
+                .Throttle(TimeSpan.FromMilliseconds(1000))
+                .Subscribe(x =>
+                {
+                    m_fileModel.AddOrChangeSearchString(x);
+                });
         }
 
         public string SearchString
