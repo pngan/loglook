@@ -57,9 +57,9 @@ namespace ViewModel
             //it will return the closest ChartPoint to a value according to an axis.
             //here we get the closest point to p.X according to the X axis
             var series = chart.Series[0];
-            var closetsPoint = series.ClosestPointTo(p.X, AxisOrientation.X);
+            var closestPoint = series.ClosestPointTo(p.X, AxisOrientation.X);
 
-            XPointer = closetsPoint.X;
+            XPointer = closestPoint?.X ?? 0;
 
         }
 
