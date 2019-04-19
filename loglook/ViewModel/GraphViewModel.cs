@@ -123,6 +123,7 @@ namespace ViewModel
                 if (SeriesCollection.Count <= index)
                     CreateSeries(e.DatedData.Title);
                 var values = SeriesCollection[index].Values;
+                Console.WriteLine($"Number of datapoints = {e?.DatedData?.Values.Count}");
                 values.Clear();
                 values.AddRange(e?.DatedData?.Values);
                 ((ScatterSeries) SeriesCollection[index]).Title = e.DatedData.Title;
