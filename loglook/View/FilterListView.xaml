@@ -24,8 +24,22 @@
 
                 <Button 
                     Grid.Row="0"
+                    Width =" 20"
+                    Height="20"
                     Command="{Binding AddSearchStringCommand}"
-                    HorizontalAlignment="Left" Width="80">Add Search String</Button>
+                    HorizontalAlignment="Right"
+                    Margin="8"
+                    >
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Path Stretch="Fill"
+                                  Fill="Gray"
+                                  Stroke="{x:Null}"
+                                  StrokeThickness="0.5"
+                                  Data="M3.875,0 L5.125,0 5.125,3.875 9,3.875 9,5.125 5.125,5.125 5.125,9 3.875,9 3.875,5.125 0,5.125 0,3.875 3.875,3.875 3.875,0 z" />
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
 
                 <ListBox x:Name="FilterItems"
                              Grid.Row="1"
