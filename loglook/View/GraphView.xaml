@@ -30,16 +30,28 @@
                                              Stroke="#ff5722"
                                              StrokeThickness="1"
                                              DataLabelForeground="White"
-                                             DataLabel="True"/>
+                                             DataLabel="True"
+                                             DisableAnimations="true"
+                                             Panel.ZIndex="1"/>
                         </lc:Axis.Sections>
                         <lc:Axis.Separator>
                             <lc:Separator Step="1" />
                         </lc:Axis.Separator>
                     </lc:Axis>
 
+                    <!--SectionWidth="1"
+                    SectionOffset="-0.5"-->
+
                 </lc:CartesianChart.AxisX>
                 <lc:CartesianChart.AxisY>
                     <lc:Axis Unit="1">
+                        <lc:Axis.Sections>
+                            <lc:AxisSection Value="{Binding YPointer}" 
+                                            StrokeThickness="1"
+                                            Stroke="#ff5722"
+                                            DisableAnimations="true"
+                                            />
+                        </lc:Axis.Sections>
                     </lc:Axis>
                 </lc:CartesianChart.AxisY>
             </lc:CartesianChart>
