@@ -10,16 +10,18 @@ namespace ViewModel
     {
         private readonly int m_index;
         private readonly IFileModel m_fileModel;
+        private readonly IGraphViewModel m_graphViewModel;
         private string m_searchString;
         private bool m_isVisible = true;
         private readonly Subject<string> m_stringSubject = new Subject<string>();
         private int m_matchCount;
         private bool m_isReservedSearchString;
 
-        public FilterItemViewModel(int index, IFileModel fileModel)
+        public FilterItemViewModel(int index, IFileModel fileModel, IGraphViewModel graphViewModel)
         {
             m_index = index;
             m_fileModel = fileModel;
+            m_graphViewModel = graphViewModel;
             MatchCount = 0;
             IObserver<string> obs;
             m_stringSubject.AsObservable()
@@ -55,7 +57,11 @@ namespace ViewModel
         public bool IsVisible
         {
             get => m_isVisible;
-            set => SetField(ref m_isVisible, value);
+            set
+            {
+                SetField(ref m_isVisible, value);
+                m_graphViewModel.ToggleSeriesVisibility(m_index);
+            }
         }
 
         public int MatchCount

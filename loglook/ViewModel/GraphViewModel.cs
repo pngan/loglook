@@ -33,6 +33,15 @@ namespace ViewModel
         public RelayCommand InspectDataCommand { get; }
 
         public Func<double, string> Formatter { get; set; }
+        public void ToggleSeriesVisibility(int index)
+        {
+            if (index >= SeriesCollection.Count)
+                return;
+            var series = ((ScatterSeries)SeriesCollection[index]);
+            series.Visibility = series.Visibility == Visibility.Visible
+                ? Visibility.Hidden
+                : Visibility.Visible;
+        }
 
         public int LineCount
         {
@@ -92,5 +101,6 @@ namespace ViewModel
         SeriesCollection SeriesCollection { get; }
 
         Func<double, string> Formatter { get; }
+        void ToggleSeriesVisibility(int index);
     }
 }

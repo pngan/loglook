@@ -31,7 +31,7 @@ namespace loglook
             builder.RegisterType<FileItemViewModel>().As<IFileItemViewModel>().InstancePerLifetimeScope();
             builder.RegisterType<FileFilteredViewModel>().As<IFileFilteredViewModel>();
             builder.RegisterType<FileRawViewModel>().As<IFileRawViewModel>();
-            builder.RegisterType<GraphViewModel>().As<IGraphViewModel>();
+            builder.RegisterType<GraphViewModel>().As<IGraphViewModel>().InstancePerOwned<IFileItemViewModel>();
             builder.RegisterType<FilterListViewModel>().As<IFilterListViewModel>();
             builder.RegisterType<FilterItemViewModel>().As<IFilterItemViewModel>();
             builder.RegisterType<FileSelectionService>().As<IFileSelectionService>();
