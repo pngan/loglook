@@ -32,9 +32,9 @@
             Add File...
         </Button>
 
+        <ScrollViewer Grid.Row="1">
         <ItemsControl
-            Grid.Row="1"
             ItemsSource="{Binding FileList}" />
-
+        </ScrollViewer>
     </Grid>
 </Window>
