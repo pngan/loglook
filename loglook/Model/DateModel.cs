@@ -13,5 +13,6 @@ namespace Model
         public void IncrementCount() => Value++;
         public DateTime DateTime { get; }
         public int Value { get; private set; }
+        public int LineNumber { get; set; }
     }
 }

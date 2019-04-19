@@ -75,13 +75,14 @@ namespace Model
             int totalMatches = 0;
             var series = await Task.Run(async () =>
             {
-
+                int lineNumber = 0;
                 using (var sr = File.OpenText(FilePath))
                 {
                     var values = new List<DateModel>();
                     string s;
                     while ((s = await sr.ReadLineAsync()) != null)
                     {
+                        lineNumber++;
                         if (s.Length < 11)
                             continue;
                         var possibleTimeStamp = s.Substring(0, 11);
@@ -103,6 +104,7 @@ namespace Model
                             values.Add(latestPoint);
                         }
                         latestPoint.IncrementCount();
+                        latestPoint.LineNumber = lineNumber;
                         totalMatches++;
                     }
                     return new DatedDataSeries(values, searchString);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
 using LiveCharts;
@@ -85,7 +86,12 @@ namespace ViewModel
 
         private void InspectData(object obj)
         {
-            // todo command to further inspect data point
+            var pt = (ChartPoint) obj;
+            var dataPt = pt.Instance as DateModel;
+            if (dataPt != null)
+            {
+                Process.Start("notepad++", $"-n{dataPt.LineNumber} {m_fileModel.FilePath}");
+            }
         }
 
         private async Task<int> GetLineCountAsync()
