@@ -72,43 +72,63 @@ namespace Model
                 return;
             }
 
+            int secondsPerBin = 1;
+            int numDataPoints = 0;
             int totalMatches = 0;
             var series = await Task.Run(async () =>
             {
-                int lineNumber = 0;
-                using (var sr = File.OpenText(FilePath))
+                const int maxNumDataPoints = 400;
+                var values = new List<DateModel>();
+                do
                 {
-                    var values = new List<DateModel>();
-                    string s;
-                    while ((s = await sr.ReadLineAsync()) != null)
+                    totalMatches = 0;
+                    numDataPoints = 0;
+                    int lineNumber = 0;
+                    values.Clear();
+                    using (var sr = File.OpenText(FilePath))
                     {
-                        lineNumber++;
-                        if (s.Length < 11)
-                            continue;
-                        var possibleTimeStamp = s.Substring(0, 11);
-                        if (!DateTime.TryParse(possibleTimeStamp, out var t))
-                            continue;
-
-                        if (!searchString.Equals("*All*", StringComparison.Ordinal))
-                            if (CultureInfo.CurrentCulture.CompareInfo.IndexOf(s.Substring(11), searchString,
-                                    CompareOptions.IgnoreCase) < 0)
-                                continue;   // no string match
-
-                        var timeStamp = new DateTime(t.Year, t.Month, t.Day, t.Hour, t.Minute, t.Second);
-                        if (!values.Any())
-                            values.Add(new DateModel(timeStamp));
-                        var latestPoint = values.Last();
-                        if ((timeStamp - latestPoint.DateTime) >= TimeSpan.FromSeconds(1))
+                        string s;
+                        while ((s = await sr.ReadLineAsync()) != null)
                         {
-                            latestPoint = new DateModel(timeStamp);
-                            values.Add(latestPoint);
+                            lineNumber++;
+                            if (s.Length < 11)
+                                continue;
+                            var possibleTimeStamp = s.Substring(0, 11);
+                            if (!DateTime.TryParse(possibleTimeStamp, out var t))
+                                continue;
+
+                            if (!searchString.Equals("*All*", StringComparison.Ordinal))
+                                if (CultureInfo.CurrentCulture.CompareInfo.IndexOf(s.Substring(11), searchString,
+                                        CompareOptions.IgnoreCase) < 0)
+                                    continue; // no string match
+
+                            var timeStamp = new DateTime(t.Year, t.Month, t.Day, t.Hour, t.Minute, t.Second);
+                            if (!values.Any())
+                            {
+                                values.Add(new DateModel(timeStamp));
+                                numDataPoints++;
+                            }
+
+                            DateModel latestPoint = values.Last();
+                            if ((timeStamp - latestPoint.DateTime) >= TimeSpan.FromSeconds(secondsPerBin))
+                            {
+                                latestPoint = new DateModel(timeStamp);
+                                values.Add(latestPoint);
+                                numDataPoints++;
+                            }
+
+                            latestPoint.IncrementCount();
+                            latestPoint.LineNumber = lineNumber;
+                            totalMatches++;
                         }
-                        latestPoint.IncrementCount();
-                        latestPoint.LineNumber = lineNumber;
-                        totalMatches++;
                     }
-                    return new DatedDataSeries(values, searchString);
-                }
+
+                    var binMultiplier = Math.Max(2, Math.Min(numDataPoints / maxNumDataPoints, 10));
+
+                    secondsPerBin *= binMultiplier;
+                } while (numDataPoints > maxNumDataPoints);
+
+                return new DatedDataSeries(values, searchString);
             });
 
             OnSeriesAddedOrChanged?.Invoke(this, new SeriesAddedOrChangedArgs(series, totalMatches, index));
