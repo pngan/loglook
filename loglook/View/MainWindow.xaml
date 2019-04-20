@@ -33,7 +33,9 @@
             HorizontalAlignment="Left" Width="120" Height="40" Margin="0 0 0 16">
                 Add File...
             </Button>
-            <TextBlock Margin="24 24 0 0">Use Mouse Wheel to Zoom, Click and Drag to Pan.</TextBlock>
+            <TextBlock Margin="24 24 0 0">Use Mouse Wheel to Zoom.
+                Click and Drag background to Pan.
+                Click on point to open in Notepad++.</TextBlock>
         </StackPanel>
         <ScrollViewer Grid.Row="1">
             <ItemsControl
