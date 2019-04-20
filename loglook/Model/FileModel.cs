@@ -77,6 +77,9 @@ namespace Model
             int totalMatches = 0;
             var series = await Task.Run(async () =>
             {
+                // The number of plotted data points is limited to 400. 
+                // Do this by repeated binning the data, with increasing bin sizes until
+                // the number of data points falls below the threshold of 400.
                 const int maxNumDataPoints = 400;
                 var values = new List<DateModel>();
                 do
@@ -123,10 +126,12 @@ namespace Model
                         }
                     }
 
+                    // Increase the bin size by a ratio of the number times the datapoints compared to 400.
+                    // Clamp the multiplier between 2 and 10 so that the binning is not too severe.
                     var binMultiplier = Math.Max(2, Math.Min(numDataPoints / maxNumDataPoints, 10));
-
                     secondsPerBin *= binMultiplier;
-                } while (numDataPoints > maxNumDataPoints);
+
+                } while (numDataPoints > maxNumDataPoints); // Iterate if too many datapoints, but next time with larger bin size
 
                 return new DatedDataSeries(values, searchString);
             });

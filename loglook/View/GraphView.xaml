@@ -14,7 +14,11 @@
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="400"></RowDefinition>
             </Grid.RowDefinitions>
-            <lc:CartesianChart Grid.Row="1" LegendLocation="Bottom" DataClickCommand="{Binding InspectDataCommand}" Series="{Binding SeriesCollection}" >
+            <lc:CartesianChart Grid.Row="1" 
+                               LegendLocation="Bottom" 
+                               DataClickCommand="{Binding InspectDataCommand}" 
+                               Series="{Binding SeriesCollection}"
+                               Zoom="X">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseMove" >
                         <i:InvokeCommandAction Command="{Binding Path=MouseMoveCommand}" CommandParameter="{Binding RelativeSource=

@@ -21,19 +21,22 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Button
+        <StackPanel 
             Grid.Row="0"
+            Orientation="Horizontal">
+            <Button
             Command="{Binding OpenFileCommand}"
             CommandParameter="{Binding RelativeSource=
                                          { RelativeSource FindAncestor, 
                                            AncestorType={x:Type Window},
                                            AncestorLevel=1}}"
-            HorizontalAlignment="Left" Width="120" Height="40" Margin="0 8 0 16">
-            Add File...
-        </Button>
-
+            HorizontalAlignment="Left" Width="120" Height="40" Margin="0 0 0 16">
+                Add File...
+            </Button>
+            <TextBlock Margin="24 24 0 0">Use Mouse Wheel to Zoom, Click and Drag to Pan.</TextBlock>
+        </StackPanel>
         <ScrollViewer Grid.Row="1">
-        <ItemsControl
+            <ItemsControl
             ItemsSource="{Binding FileList}" />
         </ScrollViewer>
     </Grid>
