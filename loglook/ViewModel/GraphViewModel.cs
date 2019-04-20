@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Xml.Schema;
 using LiveCharts;
 using LiveCharts.Configurations;
 using LiveCharts.Helpers;
@@ -125,8 +127,18 @@ namespace ViewModel
                 var values = SeriesCollection[index].Values;
                 Console.WriteLine($"Number of datapoints = {e?.DatedData?.Values.Count}");
                 values.Clear();
-                values.AddRange(e?.DatedData?.Values);
-                ((ScatterSeries) SeriesCollection[index]).Title = e.DatedData.Title;
+                if (e?.DatedData?.Values != null && e?.DatedData?.Values.Count > 0)
+                {
+                    values.AddRange(e?.DatedData?.Values);
+                    ((ScatterSeries) SeriesCollection[index]).Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    values.AddRange(Enumerable.Empty<IChartValues>());
+                    ((ScatterSeries) SeriesCollection[index]).Visibility = Visibility.Hidden;
+                }
+
+                ((ScatterSeries)SeriesCollection[index]).Title = e.DatedData.Title;
             });
         }
 
