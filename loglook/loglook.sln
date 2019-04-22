@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28729.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "loglook", "loglook\loglook.csproj", "{03F5CD12-C194-4EB5-A3A6-F4F652F1DCF2}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "View", "View\View.csproj", "{803C3BEC-6BAD-4825-838F-0B34D994955F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewModel", "ViewModel\ViewModel.csproj", "{A0548A0E-A5C2-4FCA-91D0-8A13F164CC1C}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "loglook-installer", "loglook-installer\loglook-installer.vdproj", "{BA086368-D085-4BC0-96C6-B5CDE9936746}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,8 +35,13 @@ Global
 		{A0548A0E-A5C2-4FCA-91D0-8A13F164CC1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0548A0E-A5C2-4FCA-91D0-8A13F164CC1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A0548A0E-A5C2-4FCA-91D0-8A13F164CC1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA086368-D085-4BC0-96C6-B5CDE9936746}.Debug|Any CPU.ActiveCfg = Debug
+		{BA086368-D085-4BC0-96C6-B5CDE9936746}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {05E4D5E4-49E6-4FF4-9412-7FFAEC4FB66F}
 	EndGlobalSection
 EndGlobal
