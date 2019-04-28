@@ -38,7 +38,7 @@ namespace loglook
             //builder.RegisterType<FileWindowService>().SingleInstance().AutoActivate();
             builder.RegisterType<InteractionMediator>().As<IInteractionMediator>().SingleInstance();
             builder.RegisterType<FileWindowViewModel>().As<IFileWindowViewModel>().InstancePerLifetimeScope();
-
+            builder.RegisterType<GeneralizedLogLineParser>().As<ILogLineParser>();
             builder.RegisterType<View.MainWindow>();
         }
 

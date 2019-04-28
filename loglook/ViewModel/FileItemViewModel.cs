@@ -8,7 +8,7 @@ namespace ViewModel
     {
         private readonly IFileModel m_fileModel;
 
-        public FileItemViewModel(Func<string, IFileModel> fileModelFactory,
+        public FileItemViewModel(FileModel.FileModelFactory fileModelFactory,
             Lazy<IFilterListViewModel> filterListViewModel, 
             Lazy<IGraphViewModel> graphViewModel,
             string path)

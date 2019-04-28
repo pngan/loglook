@@ -194,3 +194,5 @@ obj
 *.lock
 packages/
 sqlite3/
+.vs/
+

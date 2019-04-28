@@ -23,7 +23,6 @@ namespace ViewModel
             m_fileModel = fileModel;
             m_graphViewModel = graphViewModel;
             MatchCount = 0;
-            IObserver<string> obs;
             m_stringSubject.AsObservable()
                 .Throttle(TimeSpan.FromMilliseconds(1000))
                 .Subscribe(x =>

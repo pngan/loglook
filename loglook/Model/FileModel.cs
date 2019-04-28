@@ -34,11 +34,16 @@ namespace Model
             Index = index;
         }
     }
+
     public class FileModel : IFileModel
     {
+        private readonly ILogLineParser m_logLineParser;
 
-        public FileModel(string filePath)
+        public delegate IFileModel FileModelFactory(string filePath);
+
+        public FileModel(ILogLineParser logLineParser, string filePath)
         {
+            m_logLineParser = logLineParser;
             FilePath = filePath;
         }
 
@@ -55,7 +60,6 @@ namespace Model
 
             using (var sr = File.OpenText(FilePath))
             {
-                string s;
                 while (await sr.ReadLineAsync() != null)
                 {
                     lineCount++;
@@ -77,7 +81,7 @@ namespace Model
             int totalMatches = 0;
             var series = await Task.Run(async () =>
             {
-                // The number of plotted data points is limited to 400. 
+                // The number of plotted data points is limited to 400, to optimize plotting.
                 // Do this by repeated binning the data, with increasing bin sizes until
                 // the number of data points falls below the threshold of 400.
                 const int maxNumDataPoints = 400;
@@ -94,18 +98,19 @@ namespace Model
                         while ((s = await sr.ReadLineAsync()) != null)
                         {
                             lineNumber++;
-                            if (s.Length < 11)
-                                continue;
-                            var possibleTimeStamp = s.Substring(0, 11);
-                            if (!DateTime.TryParse(possibleTimeStamp, out var t))
+
+                            var t = m_logLineParser.DateTimePart(s);
+                            if (t == null)
                                 continue;
 
+                            var line = m_logLineParser.LineContentPart(s);
+
                             if (!searchString.Equals("*All*", StringComparison.Ordinal))
-                                if (CultureInfo.CurrentCulture.CompareInfo.IndexOf(s.Substring(11), searchString,
+                                if (CultureInfo.CurrentCulture.CompareInfo.IndexOf(line, searchString,
                                         CompareOptions.IgnoreCase) < 0)
                                     continue; // no string match
 
-                            var timeStamp = new DateTime(t.Year, t.Month, t.Day, t.Hour, t.Minute, t.Second);
+                            var timeStamp = new DateTime(t.Value.Year, t.Value.Month, t.Value.Day, t.Value.Hour, t.Value.Minute, t.Value.Second);
                             if (!values.Any())
                             {
                                 values.Add(new DateModel(timeStamp));
