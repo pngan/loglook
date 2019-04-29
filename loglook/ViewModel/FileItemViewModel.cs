@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Autofac.Features.OwnedInstances;
 using Model;
 
@@ -8,15 +9,13 @@ namespace ViewModel
     {
         private readonly IFileModel m_fileModel;
 
-        public FileItemViewModel(FileModel.FileModelFactory fileModelFactory,
+        public FileItemViewModel(IFileModel fileModel,
             Lazy<IFilterListViewModel> filterListViewModel, 
-            Lazy<IGraphViewModel> graphViewModel,
-            string path)
+            Lazy<IGraphViewModel> graphViewModel)
         {
-            m_fileModel = fileModelFactory(path);
+            m_fileModel = fileModel;
             m_filterListViewModel = filterListViewModel.Value;
             m_graphViewModel = graphViewModel.Value;
-            Path = path;
         }
 
         private readonly IFilterListViewModel m_filterListViewModel;
@@ -25,9 +24,12 @@ namespace ViewModel
         public IFilterListViewModel FilterListViewModel => m_filterListViewModel;
 
         public IGraphViewModel GraphViewModel => m_graphViewModel;
+        public async Task<bool> InitializeFileItemViewModel(string path)
+        {
+            return await m_fileModel.InitializeFileModel(path);
+        }
 
-
-        public string Path { get; }
+        public string Path => m_fileModel.FilePath;
     }
 
     public interface IFileItemViewModel
@@ -35,5 +37,7 @@ namespace ViewModel
         string Path { get; }
         IFilterListViewModel FilterListViewModel { get; }
         IGraphViewModel GraphViewModel { get; }
+
+        Task<bool> InitializeFileItemViewModel(string path);
     }
 }

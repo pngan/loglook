@@ -37,18 +37,38 @@ namespace Model
 
     public class FileModel : IFileModel
     {
-        private readonly ILogLineParser m_logLineParser;
+        private readonly IEnumerable<ILogLineParser> m_logLineParsers;
+        private ILogLineParser m_logLineParser;
 
-        public delegate IFileModel FileModelFactory(string filePath);
-
-        public FileModel(ILogLineParser logLineParser, string filePath)
+        public FileModel(IEnumerable<ILogLineParser> logLineParsers)
         {
-            m_logLineParser = logLineParser;
-            FilePath = filePath;
+            m_logLineParsers = logLineParsers;
         }
 
         public event EventHandler<SeriesAddedOrChangedArgs> OnSeriesAddedOrChanged;
-        public string FilePath { get; }
+        public string FilePath { get; private set; }
+
+        public async Task<bool> InitializeFileModel(string filePath)
+        {
+            FilePath = filePath;
+
+            // Find the correct log line parser
+            if (!File.Exists(FilePath))
+            {
+                throw new FileNotFoundException("Log file does not exist.", FilePath);
+            }
+
+            foreach (var logLineParser in m_logLineParsers)
+            {
+                if (await logLineParser.IsApplicable(filePath))
+                {
+                    m_logLineParser = logLineParser;
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
         public async Task<int> GetLineCountAsync()
         {
@@ -71,7 +91,7 @@ namespace Model
 
         public async Task AddOrChangeSearchString(int index, string searchString)
         {
-            if (!File.Exists(FilePath) || string.IsNullOrWhiteSpace(searchString))
+            if (!File.Exists(FilePath) || string.IsNullOrWhiteSpace(searchString) || m_logLineParser == null)
             {
                 return;
             }
@@ -99,11 +119,11 @@ namespace Model
                         {
                             lineNumber++;
 
-                            var t = m_logLineParser.DateTimePart(s);
+                            var t = m_logLineParsers.First().DateTimePart(s);
                             if (t == null)
                                 continue;
 
-                            var line = m_logLineParser.LineContentPart(s);
+                            var line = m_logLineParsers.First().LineContentPart(s);
 
                             if (!searchString.Equals("*All*", StringComparison.Ordinal))
                                 if (CultureInfo.CurrentCulture.CompareInfo.IndexOf(line, searchString,

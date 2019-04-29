@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Net;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace Model
@@ -21,7 +22,9 @@ namespace Model
 
     public class GeneralizedLogLineParser : ILogLineParser
     {
-        private List<LogLineDescriptor> m_logLineDescriptor = new List<LogLineDescriptor>
+        private LogLineDescriptor m_logLineDescriptor = null;
+
+        private readonly List<LogLineDescriptor> m_logLineDescriptors = new List<LogLineDescriptor>
         {
             new LogLineDescriptor
             {
@@ -39,7 +42,7 @@ namespace Model
                 try
                 {
                     var configAsString = File.ReadAllText(parserParamFile);
-                    m_logLineDescriptor = JsonConvert.DeserializeObject<List<LogLineDescriptor>>(configAsString);
+                    m_logLineDescriptors = JsonConvert.DeserializeObject<List<LogLineDescriptor>>(configAsString);
                 }
                 catch (Exception e)
                 {
@@ -53,21 +56,69 @@ namespace Model
             }
         }
 
+        public async Task<bool> IsApplicable(string path)
+        {
+            if (!File.Exists(path))
+            {
+                throw new FileNotFoundException("Log file does not exist.", path);
+            }
+
+            // Willing to look for timestamp in the first 
+            using (var sr = File.OpenText(path))
+            {
+                int maxLinesToTest = 5;
+                string s;
+                while (((s = await sr.ReadLineAsync()) != null) && maxLinesToTest > 0 )
+                {
+                    if (DateTimePart(s) != null)
+                        return true;
+                    maxLinesToTest--;
+                }
+            }
+            return false;
+        }
+
         public DateTime? DateTimePart(string line)
         {
-            if (line.Length < 11)
-                return null;
-            var possibleTimeStamp = line.Substring(m_logLineDescriptor[0].DatetimeIndexStart, m_logLineDescriptor[0].DatetimeLength);
+            if (m_logLineDescriptor == null)
+            {
+                // Evaluate the appropriate descriptor for the line
+                foreach (var logLineDescriptor in m_logLineDescriptors)
+                {
+                    if (DateTimePartImpl(line, logLineDescriptor) != null)
+                    {
+                        m_logLineDescriptor = logLineDescriptor;
+                        break;
+                    }
+                }
+            }
 
-            return DateTime.TryParseExact(possibleTimeStamp, m_logLineDescriptor[0].DateTimeFormatString, CultureInfo.InvariantCulture,
-                DateTimeStyles.None, out var t) ? t : (DateTime?) null;
+            if (m_logLineDescriptor == null)
+            {
+                return null;
+            }
+
+            return DateTimePartImpl(line, m_logLineDescriptor);
         }
+
+
+        private static DateTime? DateTimePartImpl(string line, LogLineDescriptor descriptor)
+        {
+            if (line.Length < descriptor.DatetimeIndexStart + descriptor.DatetimeLength)
+                return null;
+            var possibleTimeStamp = line.Substring(descriptor.DatetimeIndexStart, descriptor.DatetimeLength);
+
+            return DateTime.TryParseExact(possibleTimeStamp, descriptor.DateTimeFormatString, CultureInfo.InvariantCulture,
+                DateTimeStyles.None, out var t) ? t : (DateTime?)null;
+        }
+
+
 
         public string LineContentPart(string line)
         {
-            if (line.Length < m_logLineDescriptor[0].ContentIndexStart + 1)
+            if (line.Length < m_logLineDescriptors[0].ContentIndexStart + 1)
                 return null;
-            return line.Substring(m_logLineDescriptor[0].ContentIndexStart);
+            return line.Substring(m_logLineDescriptors[0].ContentIndexStart);
         }
     }
 }

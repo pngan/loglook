@@ -20,12 +20,12 @@ namespace ViewModel
         //private readonly IFileModel m_model;
         private readonly IFileSelectionService m_fileSelectionService;
         private readonly IInteractionMediator m_interactionMediator;
-        private readonly Func<string, Owned<IFileItemViewModel>> m_fileItemViewModelFactory;
+        private readonly Func<Owned<IFileItemViewModel>> m_fileItemViewModelFactory;
         public List<Owned<IFileItemViewModel>> OwnedFileList { get; } = new List<Owned<IFileItemViewModel>>();
         public ObservableCollection<IFileItemViewModel> FileList { get; } = new ObservableCollection<IFileItemViewModel>();
 
         public MainViewModel(  IFileSelectionService fileSelectionService, 
-            IInteractionMediator interactionMediator,  Func<string, Owned<IFileItemViewModel>> fileItemViewModelFactory)
+            IInteractionMediator interactionMediator,  Func<Owned<IFileItemViewModel>> fileItemViewModelFactory)
         {
             m_fileSelectionService = fileSelectionService;
             m_interactionMediator = interactionMediator;
@@ -33,14 +33,19 @@ namespace ViewModel
             OpenFileCommand = new RelayCommand(OpenFileCommandImpl);
         }
 
-        private void OpenFileCommandImpl(object windowOwner)
+        private async void OpenFileCommandImpl(object windowOwner)
         {
             var path = m_fileSelectionService.GetFilePath("");
-            var fileVm = m_fileItemViewModelFactory(path);
+            var fileVm = m_fileItemViewModelFactory();
+            if (await fileVm.Value.InitializeFileItemViewModel(path) == false)
+            {
+
+                return;
+            }
             OwnedFileList.Add(fileVm);
             FileList.Add(fileVm.Value);
             var args = new RequestFileWindowArgs(windowOwner, path);
-            //m_interactionMediator.RequestFileWindow(this, args);
+
         }
 
 

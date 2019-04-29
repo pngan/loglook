@@ -8,6 +8,8 @@ namespace Model
         event EventHandler<SeriesAddedOrChangedArgs> OnSeriesAddedOrChanged;
 
         string FilePath { get; }
+
+        Task<bool> InitializeFileModel(string filePath);
         Task<int> GetLineCountAsync();
         Task AddOrChangeSearchString(int index, string searchString);
     }
