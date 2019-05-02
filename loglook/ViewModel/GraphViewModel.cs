@@ -148,7 +148,7 @@ namespace ViewModel
             var dataPt = pt.Instance as DateModel;
             if (dataPt != null)
             {
-                Process.Start("notepad++", $"-n{dataPt.LineNumber} {m_fileModel.FilePath}");
+                Process.Start("notepad++", $"-n{dataPt.LineNumber} \"{m_fileModel.FilePath}\"");
             }
         }
 
