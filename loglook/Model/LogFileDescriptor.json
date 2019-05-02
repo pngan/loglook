@@ -3,7 +3,7 @@
     "FileType": "Simple Time",
     "FileTypeDescription": "Simple timestamp with hours to 10th of second",
     "Example": "11:37:00.00 [I] [TSKS] Process heartbeat.",
-    "DateTimeFormatString": "hh:mm:ss.ff",
+    "DateTimeFormatString": "HH:mm:ss.ff",
     "ContentIndexStart": 11,
     "DatetimeIndexStart": 0,
     "DatetimeLength": 11
