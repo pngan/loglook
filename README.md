@@ -12,6 +12,13 @@ _loglook_ is a Windows application used to visualize the contents of a log file 
 
 The _loglook__ installer can be downloaded from the Downloads folder in the loglook repository.
 
+## Release Notes
+
+### loglook-20190502.zip
+- Fixed bug where timestamp was being interpreted as 12 hour instead of 24 hour.
+- Fixed bug where notepad++ did not open if the log file path contained a space.
+- If you had previously installed loglook, delete the file ``%appdata%\LogFileDescriptor.json`` before running the installer.
+
 ## Customization for new log file types
 The default installation of _loglook_ can analyse the time stamp from several common log file formats. Custom formats can be added by editting the file: ``%appdata%\LogFileDescriptor.json``. To analyse a new type of log file, add a new entry to this configuration file and restart _loglook_. Entries take the form of:
 
